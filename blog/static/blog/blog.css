@@ -1,0 +1,32 @@
+/*
+ * Globals
+ */
+
+body {
+    font-family: 'Hiragino Sans GB', 'Microsoft Yahei', "WenQuanYi Micro Hei", SimSun, Tahoma, Arial, Helvetica, STHeiti;
+    color: #555;
+}
+
+/*
+ * Blog posts
+ */
+
+.blog-post {
+    margin-bottom: 30px;
+    border: 1px black solid;
+}
+
+
+
+/**
+       my blog css
+ */
+
+.blog-bg-dark {
+    background: #343a40 !important;
+}
+
+.blog-footer{
+    padding-top: 3rem;!important;
+    padding-bottom: 3rem;!important;
+}

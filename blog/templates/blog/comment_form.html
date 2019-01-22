@@ -1,0 +1,20 @@
+<form method="post" action="">
+    <table>
+        {% csrf_token %}
+        {{ form.as_table }}
+
+
+    </table>
+    <input type="submit" value="提交">
+</form>
+<form method="post" action="">
+    {% csrf_token %}
+    {% for item in form %}
+        {{ item.label }}{{ item }}
+        {% for error in item.errors  %}
+            <span> {{ error }} </span>
+        {% endfor %}
+        <br>
+    {% endfor %}
+    <input type="submit" value="提交">
+</form>

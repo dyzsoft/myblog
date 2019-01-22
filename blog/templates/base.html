@@ -1,0 +1,148 @@
+{% load static %}
+{% load blog_tags %}
+<!DOCTYPE html>
+<html lang="zh">
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Bootstrap -->
+<link href="{% static 'blog/bootstrap-3.3.7-dist/css/bootstrap.min.css' %}" rel="stylesheet">
+<link href="{% static 'blog/pygments.css' %}" rel="stylesheet">
+<link href="{% static 'blog/blog.css' %}" rel="stylesheet">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}{% endblock %}
+    </title>
+    <style>
+
+    </style>
+</head>
+<body style="padding-top: 70px;">
+<!-- Fixed navbar -->
+<nav class="navbar navbar-inverse navbar-fixed-top blog-bg-dark">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Dyz的博客</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/">首页</a></li>
+                <li><a href="/">关于我</a></li>
+                <li class=""><a href="/">联系</a></li>
+                <li class=""><a href="/">GitHub</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-8">
+            {% block content %}
+
+            {% endblock %}
+        </div>
+        <div class="col-sm-4">
+            {% block right-side %}
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <form action="" method="get">
+
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="感兴趣的内容">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default">搜索</button>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        文章目录
+                    </div>
+                    <div class="panel-body">
+                        {% get_recent_post as recent_post_list %}
+                        <ul class="list-unstyled">
+                            {% for post in recent_post_list %}
+                                <li>
+                                    <a href="{% url 'blog:post-detail' post.id %}" class="btn btn-default btn-link " data-toggle="tooltip" title="{{ post.title }}" data-placement="left">
+                                        <span>
+                                            {{ post.title | truncatechars_html:20 | rjust:20 }} | {{ post.create_time | date }}
+                                        </span>
+                                    </a>
+                                </li>
+                            {% empty %}
+                                <li>暂无文章</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        分类列表
+                    </div>
+                    <div class="panel-body">
+                        {% get_category as categorys %}
+                        <ul>
+                            {% for category in categorys %}
+                                <li>
+                                    <a href="{% url 'blog:category-post-list' category.id %}">  {{ category.name }}  </a>
+                                </li>
+                            {% empty %}
+                                <li>暂无分类</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">标签列表</div>
+                    <div class="panel-body">
+                        {% get_post_tags 10 as tags %}
+                        <ul>
+                            {% for tag in tags %}
+                                <li>
+                                    <a href="#">  {{ tag.name }}  </a>
+                                </li>
+                            {% empty %}
+                                <li>暂无分类</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endblock %}
+        </div>
+    </div>
+</div>
+
+
+<!-- footer -->
+
+<footer class="blog-bg-dark blog-footer ">
+    <div class="container">
+        <p class="text-center text-muted">Copyright © Your Website 2018</p>
+    </div>
+    <!-- /.container -->
+</footer>
+
+
+<!-- end footer -->
+
+<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+<script src="{% static 'blog/jquery.min.js' %}"></script>
+<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+<script src="{% static 'blog/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
+</body>
+</html>

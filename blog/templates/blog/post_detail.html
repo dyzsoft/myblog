@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load blog_tags %}
+{% block title %}
+    {{ post.title }}
+{% endblock %}
+{% block content %}
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <h2> {{ post.title }} </h2>
+            <h4 style=" margin: 20px  auto;" class="text-muted">分类：{{ post.category.name }} <span style="margin: 0 2px">|</span>
+                标签:
+                {% for tag in post.tag.all %}
+                    <span class="label {% random_tag_color %}"> {{ tag.name }}</span>
+                {% empty %}
+                    暂无标签
+                {% endfor %}
+            </h4>
+            <h4 class="text-info">简介：{{ post.summary }} </h4>
+            <div class="text-muted">
+                发布时间:{{ post.create_time | date }}
+                作者:<a href="#"> {% if post.author %} {{ post.author.username }} {% else %}暂无{% endif %} </a>
+            </div>
+            <hr>
+            {{ post.content | safe }}
+        </div>
+    </div>
+
+    <nav>
+        <ul class="pager">
+            <li><a href="{% url 'blog:index' %}">返回</a></li>
+        </ul>
+    </nav>
+
+    <form class="form-horizontal" method="post" action="{% url 'blog:post-comment-create' post.id %}">
+        {% csrf_token %}
+        {% for item in form %}
+            <div class="form-group">
+                <label for="id_{{ item.name }}" class="col-sm-2 control-label">{{ item.label }}</label>
+                <div class="col-sm-10">
+                    {{ item }}
+                    {{ item.errors }}
+                </div>
+            </div>
+        {% endfor %}
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default pull-right">提交评论</button>
+            </div>
+        </div>
+
+    </form>
+    <hr>
+
+    <div class="row">
+        <div class="col-sm-2">
+            <h3>评论：</h3>
+        </div>
+        <div class="col-sm-10">
+            {% for comment in comment_list %}
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h4>{{ comment.name }}
+                            <small class="text-muted pull-right" style="margin-left: 10px">
+                                From:{{ comment.ip_address }}</small>
+                        </h4>
+                        <hr>
+                        <div class="">
+                            <p>
+                                {{ comment.content }}
+                            </p>
+                        </div>
+                        <hr>
+                        <p class="text-muted text-center"> 时间:{{ comment.create_time }} </p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
+
